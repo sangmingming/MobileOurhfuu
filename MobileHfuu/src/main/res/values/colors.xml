@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="translucent">#30000000</color>
+
+    <color name="article_list_time">#ff999999</color>
+    <color name="article_list_title">#ff333333</color>
+
+    <!-- drop down list header font color -->
+    <color name="drop_down_list_header_font_color">#000000</color>
+    <!-- drop down list header second font color -->
+    <color name="drop_down_list_header_second_font_color">#000000</color>
+    <!-- drop down list footer font color -->
+    <color name="drop_down_list_footer_font_color">#000000</color>
+</resources>

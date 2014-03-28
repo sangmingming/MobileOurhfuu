@@ -15,11 +15,11 @@
         android:name=".AppContext">
 
         <meta-data android:value="52901a5b56240b69dd097576" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="Channel ID" android:name="UMENG_CHANNEL"/>
+        <meta-data android:value="test" android:name="UMENG_CHANNEL"/>
         <activity
             android:name=".SplashActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
             android:icon="@drawable/ic_launcher"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
