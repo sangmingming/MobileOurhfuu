@@ -17,10 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -99,15 +96,10 @@ public class NavigationDrawerFragment extends BaseFragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
+
+        mDrawerListView.setAdapter(
+                new LeftItemAdapter()
+                );
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -285,5 +277,32 @@ public class NavigationDrawerFragment extends BaseFragment {
     @Override
     protected void setFragmentName() {
         mFragmentName = "";
+    }
+
+
+    private class LeftItemAdapter extends  BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return Config.leftCategory.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return Config.leftCategory.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return Config.leftCategory.get(position).id;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView v = (TextView) LayoutInflater.from(getActionBar().getThemedContext())
+                    .inflate(android.R.layout.simple_list_item_1, null);
+            v.setText(Config.leftCategory.get(position).name);
+            return v;
+        }
     }
 }
