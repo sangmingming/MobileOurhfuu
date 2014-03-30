@@ -55,7 +55,6 @@ public class ArticleListFragment extends BaseFragment implements AdapterView.OnI
         mListView.setAdapter(mAdapter);
         mListView.setOnRefreshListener(mOnRefreshListener);
         mListView.setOnItemClickListener(this);
-        loadData();
         mAdapter.enableLoadMore();
         mAdapter.setLoadMoreListener(new BucketListAdapter.LoadMoreListener() {
             @Override

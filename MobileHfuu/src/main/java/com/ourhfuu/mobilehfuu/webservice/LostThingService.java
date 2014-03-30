@@ -1,36 +1,54 @@
 package com.ourhfuu.mobilehfuu.webservice;
 
 import android.content.Context;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.ourhfuu.mobilehfuu.util.CLog;
 
 
 /**
- * Created with IntelliJ IDEA.
  * User: sam
  * Date: 11/23/13
  * Time: 1:23 PM
- * To change this template use File | Settings | File Templates.
  */
 public class LostThingService {
     private Context mContext;
+    private RequestQueue mRequestQueue;
+    private UrlBuilder mUrlBuilder;
+
+    public final static int FIND = 1;
+    public final static int LOST = 0;
 
     public LostThingService(Context context) {
         mContext = context;
+        mRequestQueue = Volley.newRequestQueue(mContext);
+        mUrlBuilder = new UrlBuilder(new WebConfig());
     }
 
-//    public void getLostThing(int id, ResponseHandlerInterface responseHandler) {
-//        RequestParams params = new RequestParams();
-//        params.put("action", "lost_detail");
-//        params.put("id", String.valueOf(id));
-//        mHttpClient.get(mContext, mContext.getString(R.string.host), params, responseHandler);
-//    }
-//
-//    public void getLostThingList(int flag,int sinceid, ResponseHandlerInterface responseHandler) {
-//        RequestParams params = new RequestParams();
-//        params.put("action", "lost_list");
-//        params.put("flag", flag);
-//        params.put("sinceid", sinceid);
-//        mHttpClient.get(mContext, mContext.getString(R.string.host), params, responseHandler);
-//    }
+
+    public void getLostThing(int id, Response.Listener listener, Response.ErrorListener errorListener) {
+        if (id <= 0) {
+            return;
+        }
+        mRequestQueue.add(new StringRequest(mUrlBuilder.buildUrlForGetLostDetail(id), listener, errorListener));
+        mRequestQueue.start();
+    }
+
+    public void getLostThingList(int flag, int sinceid, Response.Listener listener, Response.ErrorListener errorListener) {
+        CLog.i(mUrlBuilder.builderUrlForGetLostList(flag, sinceid));
+        mRequestQueue.add(new StringRequest(mUrlBuilder.builderUrlForGetLostList(flag, sinceid), listener, errorListener));
+        mRequestQueue.start();
+    }
+
+    public void stop() {
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
+    }
+
+
 //
 //    public void postLostThing(LostThing thing, ResponseHandlerInterface responseHandler) {
 //        RequestParams params = new RequestParams();

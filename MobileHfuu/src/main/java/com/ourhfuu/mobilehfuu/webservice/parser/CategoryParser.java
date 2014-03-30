@@ -9,11 +9,9 @@ import com.ourhfuu.mobilehfuu.entity.Category;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
  * User: sam
  * Date: 11/23/13
  * Time: 1:27 PM
- * To change this template use File | Settings | File Templates.
  */
 public class CategoryParser extends JParser<Category>{
 

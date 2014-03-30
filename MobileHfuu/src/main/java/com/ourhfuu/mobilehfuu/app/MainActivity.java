@@ -52,6 +52,9 @@ public class MainActivity extends BaseActionBarActivity
             case Config.NEWS_ITEM:
                 fragment = ArticleListFragment.newInstance();
                 break;
+            case Config.LOST_ITEM:
+                fragment = LostTypeFragment.newInstance();
+                break;
             default:
                 fragment = PlaceholderFragment.newInstance(position+ 1);
         }
