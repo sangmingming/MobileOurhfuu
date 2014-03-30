@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.ourhfuu.mobilehfuu.entity.LostThing;
 import com.ourhfuu.mobilehfuu.webservice.LostThingService;
 
 
@@ -77,8 +78,8 @@ public class LostTypeFragment extends BaseFragment {
 
         protected static final int ITEM_COUNT = 2;
         protected final String[] TITLE = new String[] {"失物信息", "招领信息"};
-        private LostListFragment mLostFragment = LostListFragment.newInstance(LostThingService.LOST);
-        private LostListFragment mFindFragment = LostListFragment.newInstance(LostThingService.FIND);
+        private LostListFragment mLostFragment = LostListFragment.newInstance(LostThing.LOST);
+        private LostListFragment mFindFragment = LostListFragment.newInstance(LostThing.FOUND);
 
 
         public LostPagerAdapter() {
@@ -88,9 +89,9 @@ public class LostTypeFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case LostThingService.LOST:
+                case LostThing.LOST:
                     return mLostFragment;
-                case LostThingService.FIND:
+                case LostThing.FOUND:
                     return mFindFragment;
             }
             return null;

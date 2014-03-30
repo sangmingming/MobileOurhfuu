@@ -10,7 +10,7 @@ import android.os.Parcelable;
  * Time: 1:17 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Article implements Parcelable{
+public class Article implements Parcelable {
     private int aid;
     private int catid;
     private int uid;
@@ -112,7 +112,7 @@ public class Article implements Parcelable{
         dest.writeString(content);
     }
 
-    public static final Creator<Article> CREATOR = new Creator<Article>(){
+    public static final Creator<Article> CREATOR = new Creator<Article>() {
 
         @Override
         public Article createFromParcel(Parcel source) {

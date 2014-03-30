@@ -18,9 +18,6 @@ public class LostThingService {
     private RequestQueue mRequestQueue;
     private UrlBuilder mUrlBuilder;
 
-    public final static int FIND = 1;
-    public final static int LOST = 0;
-
     public LostThingService(Context context) {
         mContext = context;
         mRequestQueue = Volley.newRequestQueue(mContext);

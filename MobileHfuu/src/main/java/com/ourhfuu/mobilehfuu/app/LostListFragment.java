@@ -5,6 +5,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * Created by sam on 14-3-30.
  */
-public class LostListFragment extends BaseFragment {
+public class LostListFragment extends BaseFragment implements AdapterView.OnItemClickListener{
     public final static String LOST_TYPE = "lost_type";
 
     private int mType;
@@ -52,6 +53,7 @@ public class LostListFragment extends BaseFragment {
         mAdapter.enableLoadMore();
         mAdapter.setLoadMoreListener(mLoadMoreListener);
         mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(this);
         return view;
     }
 
@@ -59,7 +61,7 @@ public class LostListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mType = getArguments().getInt(LOST_TYPE, LostThingService.LOST);
+            mType = getArguments().getInt(LOST_TYPE, LostThing.LOST);
         }
         mParser = new LostThingParser();
     }
@@ -128,4 +130,10 @@ public class LostListFragment extends BaseFragment {
             loadData();
         }
     };
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        int pos = position - mListView.getRefreshableView().getHeaderViewsCount();
+        LostDetailActivity.openLostDetail(getActivity(), mAdapter.getElement(pos));
+    }
 }

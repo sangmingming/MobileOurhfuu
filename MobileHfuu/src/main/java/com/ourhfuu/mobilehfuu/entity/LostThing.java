@@ -1,5 +1,8 @@
 package com.ourhfuu.mobilehfuu.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: sam
@@ -7,7 +10,7 @@ package com.ourhfuu.mobilehfuu.entity;
  * Time: 1:19 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LostThing {
+public class LostThing implements Parcelable {
 
     public static final int LOST = 0;   //丢失东西
     public static final int FOUND = 1;  //捡到东西
@@ -126,4 +129,48 @@ public class LostThing {
                 ", tid=" + tid +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeLong(uid);
+        dest.writeInt(tid);
+        dest.writeString(username);
+        dest.writeString(name);
+        dest.writeLong(time);
+        dest.writeString(place);
+        dest.writeInt(flag);
+        dest.writeString(lianxi);
+        dest.writeString(describe);
+    }
+
+    public static final Creator<LostThing> CREATOR = new Creator<LostThing>(){
+
+        @Override
+        public LostThing createFromParcel(Parcel source) {
+            LostThing thing = new LostThing();
+            thing.id = source.readInt();
+            thing.uid = source.readLong();
+            thing.tid = source.readInt();
+            thing.username = source.readString();
+            thing.name = source.readString();
+            thing.time = source.readLong();
+            thing.place = source.readString();
+            thing.flag = source.readInt();
+            thing.lianxi = source.readString();
+            thing.describe = source.readString();
+            return thing;
+        }
+
+        @Override
+        public LostThing[] newArray(int size) {
+            return new LostThing[0];
+        }
+    };
+
 }
