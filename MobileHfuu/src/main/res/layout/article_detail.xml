@@ -39,15 +39,23 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
         />
-    <TextView android:id="@+id/a_content"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:padding="5dp"
-        android:textSize="14sp"
-        android:textColor="@color/article_list_title"
+
+    <ScrollView
         android:layout_below="@id/a_time"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/a_content"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:textSize="14sp"
+            android:textColor="@color/article_list_title"
+            android:layout_below="@id/a_time"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            />
+    </ScrollView>
 
 </RelativeLayout>

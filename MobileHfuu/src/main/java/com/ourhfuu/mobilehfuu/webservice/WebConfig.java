@@ -5,7 +5,7 @@ package com.ourhfuu.mobilehfuu.webservice;
  */
 public class WebConfig {
 
-    private final static String HOST = "";
+    private final static String HOST = "http://www.ourhfuu.com/source/plugin/mobile_ourhfuu/mobile.php";
     private final static String TEST_HOST = "";
     private boolean mIsTest = false;
 

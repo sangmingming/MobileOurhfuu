@@ -12,10 +12,13 @@ public class Config {
 
     public static List<Category> leftCategory;
 
+    public final static int NEWS_ITEM = 1;
+    public final static int LOST_ITEM = 2;
+
     static {
         leftCategory = new ArrayList<Category>();
-        leftCategory.add(new Category(1, "校园新闻"));
-        leftCategory.add(new Category(2, "失物招领"));
+        leftCategory.add(new Category(NEWS_ITEM, "校园新闻"));
+        leftCategory.add(new Category(LOST_ITEM, "失物招领"));
     }
 
 

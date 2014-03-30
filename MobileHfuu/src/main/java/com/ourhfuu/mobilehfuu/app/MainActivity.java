@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
+import com.ourhfuu.mobilehfuu.entity.Article;
 
 
 public class MainActivity extends BaseActionBarActivity
@@ -46,8 +47,16 @@ public class MainActivity extends BaseActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment;
+        switch (Config.leftCategory.get(position).id) {
+            case Config.NEWS_ITEM:
+                fragment = ArticleListFragment.newInstance();
+                break;
+            default:
+                fragment = PlaceholderFragment.newInstance(position+ 1);
+        }
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, fragment)
                 .commit();
     }
 
@@ -67,7 +76,7 @@ public class MainActivity extends BaseActionBarActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }

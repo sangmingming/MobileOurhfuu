@@ -300,7 +300,7 @@ public class NavigationDrawerFragment extends BaseFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView v = (TextView) LayoutInflater.from(getActionBar().getThemedContext())
-                    .inflate(android.R.layout.simple_list_item_1, null);
+                    .inflate(R.layout.left_list_item, null);
             v.setText(Config.leftCategory.get(position).name);
             return v;
         }
