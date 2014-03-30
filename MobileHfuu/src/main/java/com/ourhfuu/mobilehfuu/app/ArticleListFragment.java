@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.ourhfuu.mobilehfuu.adapter.ArticleAdapter;
@@ -77,8 +78,15 @@ public class ArticleListFragment extends BaseFragment implements AdapterView.OnI
     };
 
     private void loadData() {
-        mService.getArticleList(mCid, mSinceId, mListener);
+        mService.getArticleList(mCid, mSinceId, mListener, mErrorListenr);
     }
+
+    private Response.ErrorListener mErrorListenr = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            CToast.showToast(getActivity(), error.getMessage());
+        }
+    };
 
     private Response.Listener<String> mListener = new Response.Listener<String>() {
         @Override

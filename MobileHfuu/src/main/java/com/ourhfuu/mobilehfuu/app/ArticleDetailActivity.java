@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.text.Html;
 import android.widget.TextView;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.ourhfuu.mobilehfuu.entity.Article;
 import com.ourhfuu.mobilehfuu.util.CToast;
+import com.ourhfuu.mobilehfuu.util.StringUtil;
 import com.ourhfuu.mobilehfuu.webservice.ArticleService;
 import com.ourhfuu.mobilehfuu.webservice.parser.ArticleParser;
 import com.ourhfuu.mobilehfuu.webservice.parser.ParserException;
@@ -36,12 +38,12 @@ public class ArticleDetailActivity extends BaseActionBarActivity {
 
         mAuthor.setText(mArticle.getUsername());
         mTitle.setText(mArticle.getTitle());
-        mTime.setText(String.valueOf(mArticle.getDateline()));
+        mTime.setText(StringUtil.friendlyTime(mArticle.getDateline()));
 
         mParser = new ArticleParser();
 
         mService = new ArticleService(this);
-        mService.getArticle(mArticle.getAid(), mListener);
+        mService.getArticle(mArticle.getAid(), mListener, mErrorListenr);
 
     }
 
@@ -62,6 +64,13 @@ public class ArticleDetailActivity extends BaseActionBarActivity {
             } catch (ParserException e) {
                 CToast.showToast(ArticleDetailActivity.this, e.getMessage());
             }
+        }
+    };
+
+    private Response.ErrorListener mErrorListenr = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            CToast.showToast(ArticleDetailActivity.this, error.getMessage());
         }
     };
 }

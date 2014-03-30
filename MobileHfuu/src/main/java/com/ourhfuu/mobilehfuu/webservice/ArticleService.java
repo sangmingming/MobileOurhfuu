@@ -29,17 +29,17 @@ public class ArticleService {
         mUrlBuilder = new UrlBuilder(new WebConfig());
     }
 
-    public void getArticle(int id, Response.Listener listener) {
+    public void getArticle(int id, Response.Listener listener, Response.ErrorListener errorListener) {
         if (id <= 0) {
             return;
         }
-        mRequestQueue.add(new StringRequest(mUrlBuilder.buildUrlForGetArticleDetail(id), listener, null));
+        mRequestQueue.add(new StringRequest(mUrlBuilder.buildUrlForGetArticleDetail(id), listener, errorListener));
         mRequestQueue.start();
     }
 
-    public void getArticleList(int cid, int sinceid, Response.Listener listener) {
+    public void getArticleList(int cid, int sinceid, Response.Listener listener, Response.ErrorListener errorListener) {
         CLog.i(mUrlBuilder.buildUrlForGetArticleList(cid, sinceid));
-        mRequestQueue.add(new StringRequest(mUrlBuilder.buildUrlForGetArticleList(cid, sinceid), listener, null));
+        mRequestQueue.add(new StringRequest(mUrlBuilder.buildUrlForGetArticleList(cid, sinceid), listener, errorListener));
         mRequestQueue.start();
     }
 
