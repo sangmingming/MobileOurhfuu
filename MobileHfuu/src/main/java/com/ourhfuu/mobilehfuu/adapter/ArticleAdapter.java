@@ -37,7 +37,10 @@ public class ArticleAdapter extends BucketListAdapter<Article> {
 
     @Override
     public long getItemId(int position) {
-        return getElement(position).getAid();
+        if (position < getElementCount()) {
+            return getElement(position).getAid();
+        }
+        return 0;
     }
 
     @Override

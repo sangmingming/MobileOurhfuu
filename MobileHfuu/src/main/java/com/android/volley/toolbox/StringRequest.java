@@ -16,6 +16,7 @@
 
 package com.android.volley.toolbox;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,12 +24,15 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A canned request for retrieving the response body at a given URL as a String.
  */
 public class StringRequest extends Request<String> {
     private final Listener<String> mListener;
+    private Map<String,String> mHeaders;
 
     /**
      * Creates a new request with the given method.
@@ -41,6 +45,8 @@ public class StringRequest extends Request<String> {
     public StringRequest(int method, String url, Listener<String> listener,
             ErrorListener errorListener) {
         super(method, url, errorListener);
+        mHeaders = new HashMap<String, String>();
+        mHeaders.put("User-Agent", "com.ourhfuu.mobile/sam");
         mListener = listener;
     }
 
@@ -69,5 +75,10 @@ public class StringRequest extends Request<String> {
             parsed = new String(response.data);
         }
         return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
+    }
+
+    @Override
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        return mHeaders;
     }
 }

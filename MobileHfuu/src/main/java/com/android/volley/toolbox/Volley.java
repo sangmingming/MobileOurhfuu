@@ -42,13 +42,7 @@ public class Volley {
     public static RequestQueue newRequestQueue(Context context, HttpStack stack) {
         File cacheDir = new File(context.getCacheDir(), DEFAULT_CACHE_DIR);
 
-        String userAgent = "volley/0";
-        try {
-            String packageName = context.getPackageName();
-            PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
-            userAgent = packageName + "/" + info.versionCode;
-        } catch (NameNotFoundException e) {
-        }
+        String userAgent = "com.ourhfuu.mobile/sam";
 
         if (stack == null) {
             if (Build.VERSION.SDK_INT >= 9) {

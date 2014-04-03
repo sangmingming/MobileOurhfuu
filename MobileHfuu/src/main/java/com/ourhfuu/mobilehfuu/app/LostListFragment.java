@@ -1,15 +1,15 @@
 package com.ourhfuu.mobilehfuu.app;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.ourhfuu.mobilehfuu.adapter.BucketListAdapter;
 import com.ourhfuu.mobilehfuu.adapter.LostAdapter;
 import com.ourhfuu.mobilehfuu.entity.LostThing;
@@ -28,7 +28,8 @@ public class LostListFragment extends BaseFragment implements AdapterView.OnItem
     public final static String LOST_TYPE = "lost_type";
 
     private int mType;
-    private PullToRefreshListView mListView;
+    private ListView mListView;
+    private SwipeRefreshLayout mRefreshLayout;
     private LostThingService mService;
     private LostThingParser mParser;
     private LostAdapter mAdapter;
@@ -45,16 +46,25 @@ public class LostListFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.lost_list, null);
-        mListView = (PullToRefreshListView) view.findViewById(R.id.lost_list);
-        mListView.setOnRefreshListener(mOnRefreshListener);
-        mAdapter = new LostAdapter(getActivity(), new ArrayList<LostThing>());
-        mService = new LostThingService(getActivity());
-        mAdapter.enableLoadMore();
-        mAdapter.setLoadMoreListener(mLoadMoreListener);
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(this);
-        return view;
+        if (mRefreshLayout == null) {
+            mRefreshLayout = (SwipeRefreshLayout) inflater.inflate(R.layout.lost_list, null);
+            mListView = (ListView) mRefreshLayout.findViewById(R.id.lost_list);
+            mRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+            mRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
+                    android.R.color.holo_green_light,
+                    android.R.color.holo_orange_light,
+                    android.R.color.holo_red_light);
+            mAdapter = new LostAdapter(getActivity(), new ArrayList<LostThing>());
+            mService = new LostThingService(getActivity());
+            mListView.setAdapter(mAdapter);
+            mAdapter.enableLoadMore();
+            mAdapter.setLoadMoreListener(mLoadMoreListener);
+            mListView.setOnItemClickListener(this);
+        }
+        if (mRefreshLayout.getParent() != null) {
+            ((ViewGroup) mRefreshLayout.getParent()).removeAllViews();
+        }
+        return mRefreshLayout;
     }
 
     @Override
@@ -73,7 +83,10 @@ public class LostListFragment extends BaseFragment implements AdapterView.OnItem
     }
 
     private void loadData() {
-        mService.getLostThingList(mType, mSinceId, mListener, mErrorListener);
+        if (mSinceId != -100) {
+            mService.getLostThingList(mType, mSinceId, mListener, mErrorListener);
+            mSinceId = -100;
+        }
     }
 
     @Override
@@ -84,9 +97,10 @@ public class LostListFragment extends BaseFragment implements AdapterView.OnItem
     private Response.Listener<String> mListener = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
+            mSinceId = 0;
             try {
                 List<LostThing> list = mParser.parseList(response);
-                if (mListView.isRefreshing()) {
+                if (mRefreshLayout.isRefreshing()) {
                     mAdapter.clear();
                 }
                 mAdapter.addAll(list);
@@ -96,8 +110,8 @@ public class LostListFragment extends BaseFragment implements AdapterView.OnItem
                 CToast.showToast(getActivity(), e.getMessage());
                 mAdapter.disableLoadMore();
             }
-            if (mListView.isRefreshing()) {
-                mListView.onRefreshComplete();
+            if (mRefreshLayout.isRefreshing()) {
+                mRefreshLayout.setRefreshing(false);
             }
         }
     };
@@ -107,19 +121,16 @@ public class LostListFragment extends BaseFragment implements AdapterView.OnItem
         public void onErrorResponse(VolleyError error) {
             CToast.showToast(getActivity(), error.getMessage());
             mAdapter.disableLoadMore();
-            if (mListView.isRefreshing()) {
-                mListView.onRefreshComplete();
+            if (mRefreshLayout.isRefreshing()) {
+                mRefreshLayout.setRefreshing(false);
             }
         }
     };
 
-    private PullToRefreshBase.OnRefreshListener mOnRefreshListener = new PullToRefreshBase.OnRefreshListener() {
+    private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
-        public void onRefresh(PullToRefreshBase refreshView) {
+        public void onRefresh() {
             mSinceId = 0;
-            String label = DateUtils.formatDateTime(getActivity(), System.currentTimeMillis(),
-                    DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
-            refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
             loadData();
         }
     };
@@ -133,7 +144,7 @@ public class LostListFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int pos = position - mListView.getRefreshableView().getHeaderViewsCount();
+        int pos = position - mListView.getHeaderViewsCount();
         LostDetailActivity.openLostDetail(getActivity(), mAdapter.getElement(pos));
     }
 }
